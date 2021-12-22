@@ -109,3 +109,5 @@ done # Reads back channel 0..7 and temperature (channel #8)
 modprobe addicmos fw_load=0 calib_load=0
 modprobe imx8_media_dev
 modprobe spi_nor
+
+touch /tmp/tof-power-enabled

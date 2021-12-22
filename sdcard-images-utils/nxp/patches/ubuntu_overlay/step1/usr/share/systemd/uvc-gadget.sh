@@ -261,3 +261,5 @@ case "$1" in
     *)
 	echo "Usage : $0 {start|stop}"
 esac
+
+echo "host" >  /tmp/evm_mode

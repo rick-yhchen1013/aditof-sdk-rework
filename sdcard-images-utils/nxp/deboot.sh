@@ -60,7 +60,7 @@ function setup_config() {
   # default configs
   TARGET_ARCH=arm64
   DISTRO_MIRROR=${DISTRO_MIRROR:='http://ports.ubuntu.com/ubuntu-ports'}
-  DISTRO_CODE=bionic
+  DISTRO_CODE=focal
   USERNAME=analog
   PASSWORD=analog
   TZ_AREA=Etc
@@ -228,6 +228,7 @@ apt install -y ${ADD_LIST_ST_3}
 systemctl enable systemd-networkd.service
 systemctl enable avahi-daemon.service
 systemctl enable uvc-gadget.service
+systemctl set-default multi-user.target
 
 #sdk install
 pushd /home/${USERNAME}
@@ -245,9 +246,6 @@ popd
 popd
 
 EOF
-
-  # Apply step1 overlay
-  sudo cp -R ${SCRIPT_DIR}/patches/ubuntu_overlay/step1/* ${ROOTFS_TMP}/
 
   sudo mv stage3.sh ${ROOTFS_TMP}/tmp
   sudo chmod +x ${ROOTFS_TMP}/tmp/stage3.sh
@@ -274,6 +272,9 @@ function main() {
   mkdir -p ${ROOTFS_TMP}
   mkfs.ext4 rootfs.ext4
   sudo mount -o loop -o barrier=0 rootfs.ext4 ${ROOTFS_TMP}
+
+  # Apply stage1 overlay
+  sudo cp -R ${SCRIPT_DIR}/patches/ubuntu_overlay/step1/* ${ROOTFS_TMP}/
 
   install_qemu
 
